@@ -43,6 +43,6 @@ const daysCount = parseInt(args[0], 10);
 
 getWordsForNextDays(daysCount).then((results) => {
     results.forEach((entry) => {
-        console.log(`Date : ${entry.print_date}, Mot : ${entry.solution}`);
+        console.log(`Date : ${entry.print_date}, Word : ${entry.solution}`);
     });
 });
