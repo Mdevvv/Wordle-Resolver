@@ -14,8 +14,18 @@ async function apimekoGames(series, games, resultIndex="champion_name") {
         const key = "QhDZJfngdx";
     
         const bytes = CryptoJS.AES.decrypt(encryptedData, key);
-    
-        console.log(game + " : " + JSON.parse(bytes.toString(CryptoJS.enc.Utf8))[resultIndex]);
+        const resJson = JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
+        console.log(game + " : " + resJson[resultIndex]);
+
+        if(series == "loldle" && resJson) {
+            console.log
+            if(game == "ability")
+                console.log("ability letter : " + resJson.ability_letter);
+
+            if(game == "splash")
+                console.log("splash name : " + resJson.splash_name);
+        }
+        
     }
 
 }
@@ -33,7 +43,10 @@ async function allDle() {
     ];
     for (const element of all) {
         console.log('\n' + element.series + ' :\n');
+        
         await apimekoGames(element.series, element.games);
+
+
     }
 }
 
