@@ -1,7 +1,13 @@
 
+const dom = document.querySelector("body");
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 async function getWordsForNextDays(daysCount) {
     
-    const url = 'https://www.nytimes.com/svc/wordle/v2/';//+ data + '.json'
+    const url = 'https://api.allorigins.win/raw?url=https://www.nytimes.com/svc/wordle/v2/';//+ data + '.json'
     const today = new Date();
     const results = [];
     for (let i = 0; i < daysCount; i++) {
@@ -25,20 +31,23 @@ async function getWordsForNextDays(daysCount) {
         } catch (error) {
             console.error(error, "probably not set by the NYT");
         }
-        
+        await sleep(500);
         results.push(data);
+        dom.innerHTML += `<pre>Date : ${results[results.length - 1].print_date}, Word : ${results[results.length - 1].solution}</pre>`
+        
     }
 
     return results;
 }
-
+/*
 const args = process.argv.slice(2);
 
 if (args.length < 1 || isNaN(parseInt(args[0]))) {
     console.error("Add a number greater than 1 as an argument to generate words for multiple days.");
     args[0] = 1;
 }
-
+*/
+const args = ['30']; 
 const daysCount = parseInt(args[0], 10);
 
 getWordsForNextDays(daysCount).then((results) => {

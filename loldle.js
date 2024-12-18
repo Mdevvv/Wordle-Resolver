@@ -1,4 +1,7 @@
-const CryptoJS = require("./crypto-js.min.js");
+//const CryptoJS = require("./crypto-js.min.js");
+
+const results = [];
+const dom = document.querySelector("body");
 
 async function apimekoGames(series, games, resultIndex="champion_name") {
     
@@ -15,15 +18,22 @@ async function apimekoGames(series, games, resultIndex="champion_name") {
     
         const bytes = CryptoJS.AES.decrypt(encryptedData, key);
         const resJson = JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
-        console.log(game + " : " + resJson[resultIndex]);
+        results.push(game + " : " + resJson[resultIndex]);
+        dom.innerHTML += "<pre>" + results[results.length - 1] + "</pre>" 
 
         if(series == "loldle" && resJson) {
             console.log
-            if(game == "ability")
-                console.log("ability letter : " + resJson.ability_letter);
+            if(game == "ability") {
+                results.push("ability letter : " + resJson.ability_letter);
+                dom.innerHTML += "<pre>" + results[results.length - 1] + "</pre>" 
 
-            if(game == "splash")
-                console.log("splash name : " + resJson.splash_name);
+            }
+
+            if(game == "splash") {
+                results.push("splash name : " + resJson.splash_name);
+                dom.innerHTML += "<pre>" + results[results.length - 1] + "</pre>" 
+
+            }
         }
         
     }
@@ -42,12 +52,17 @@ async function allDle() {
         {series : "narutodle", games : ["classic", "quote", "jutsu", "eye" ]},
     ];
     for (const element of all) {
-        console.log('\n' + element.series + ' :\n');
-        
+        results.push( element.series);
+        dom.innerHTML += "<h3><b><pre>" + results[results.length - 1] + "</pre></b></h3>" 
+
         await apimekoGames(element.series, element.games);
 
 
     }
+
+    console.log(results);
 }
+
+
 
 allDle();
